@@ -1,36 +1,104 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# NeurolinkX Frontend — Shipment Tracking Dashboard
 
-## Getting Started
+A production-quality shipment tracking dashboard built for the NeurolinkX Frontend Developer Assignment.
 
-First, run the development server:
+## Quick Start
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+pnpm install
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+**Demo credentials:**
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Email: `demo@neurolinkx.com`
+- Password: `password123`
 
-## Learn More
+## Storybook
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+pnpm storybook
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Open [http://localhost:6006](http://localhost:6006) to view the component library.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Run Tests
 
-## Deploy on Vercel
+```bash
+pnpm test
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Tech Stack
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| Category   | Technology                                  |
+| ---------- | ------------------------------------------- |
+| Framework  | Next.js 15 App Router + React 19            |
+| Language   | TypeScript 5 (strict mode)                  |
+| Styling    | Tailwind CSS 4 + CSS custom property tokens |
+| State      | TanStack Query v5 + Zustand                 |
+| Forms      | React Hook Form + Zod                       |
+| Mock API   | MSW (Mock Service Worker)                   |
+| Auth       | NextAuth.js v5                              |
+| Testing    | Vitest + React Testing Library + jest-axe   |
+| CI/CD      | GitHub Actions                              |
+| Components | Storybook 10                                |
+
+## Project Structure
+
+```
+app/
+  (auth)/           # Login, Signup, Forgot Password pages
+  (dashboard)/      # Dashboard, Shipments, Settings pages
+  components/ui/    # Reusable component library
+  api/              # Next.js API routes
+lib/
+  api/              # Axios instance + interceptors
+  hooks/            # Custom React hooks
+  msw/              # Mock Service Worker handlers
+  store/            # Zustand UI store
+  auth.ts           # NextAuth configuration
+  providers.tsx     # React Query + MSW provider
+docs/
+  architecture.md   # System design document
+  lighthouse-report.html
+  bundle-analyzer.png
+```
+
+## Components Built
+
+- **Button** — 4 variants, 3 sizes, loading state, full accessibility
+- **DataTable** — TanStack Table, sortable, paginated, row selection, skeleton loading
+- **Modal** — Focus trap, ESC to close, animated, portal rendered
+- **Toast** — 4 variants, auto-dismiss, stackable, aria-live
+- **FormFields** — Input, Textarea, Select, Checkbox, Radio, Switch with Zod validation
+- **CommandPalette** — Cmd+K trigger, fuzzy search, keyboard navigation
+
+## Key Technical Decisions
+
+**MSW over JSON Server** — MSW intercepts requests at the network level so mock and real API behave identically. Zero code changes needed when switching to production.
+
+**Tailwind + CSS tokens** — All design values are CSS custom properties. Zero hardcoded colours anywhere in the codebase. Dark mode works by swapping token values.
+
+**URL as source of truth** — Shipment filters, sort, and pagination are stored in the URL via nuqs. Shareable links, browser back button, and refresh all work correctly.
+
+**TanStack Query for all server state** — Zustand only manages UI state (sidebar, theme, drawers). All API data lives in TanStack Query with proper cache keys and stale times.
+
+## Known Limitations
+
+- Map embed on shipment detail page uses a placeholder (Mapbox token not configured)
+- Auth is mock only — no real database backend
+- CSV export is UI only — downloads a placeholder file
+
+## What I'd Improve With More Time
+
+- Add real database with Prisma + PostgreSQL
+- Add Mapbox GL for real shipment route visualization
+- Add E2E Playwright tests for full user flows
+- Add Chromatic for visual regression testing on every PR
+- Add Sentry for error tracking in production
+
+## Architecture
+
+See [docs/architecture.md](./docs/architecture.md) for the full system design document covering rendering strategy, component architecture, state management, performance at 2M MAU, security, and trade-off analysis.
